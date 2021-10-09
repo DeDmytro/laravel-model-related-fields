@@ -2,7 +2,7 @@
     "name": "dedmytro/laravel-model-related-fields",
     "description": "Provide an ability to add related fields/columns to all model Eloquent queries",
     "type": "library",
-    "license": "MIT_License",
+    "license": "MIT",
     "keywords": [
         "laravel",
         "laravel model fields",
@@ -11,7 +11,7 @@
     ],
     "authors": [
         {
-            "name": "godundmytro",
+            "name": "Hodun Dmytro",
             "email": "godundmytro@gmail.com"
         }
     ],
@@ -43,5 +43,12 @@
         "sort-packages": true
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DeDmytro\\LaravelModelRelatedFields\\ServiceProvider"
+            ]
+        }
+    }
 }
