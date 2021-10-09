@@ -1,8 +1,8 @@
 <?php
 
-namespace Dedmytro\LaravelModelRelatedFields\Exceptions;
+namespace DeDmytro\LaravelModelRelatedFields\Exceptions;
 
-use Dedmytro\LaravelModelRelatedFields\RelatedField;
+use DeDmytro\LaravelModelRelatedFields\RelatedField;
 use Throwable;
 
 class IncorrectStringParameter extends \Exception

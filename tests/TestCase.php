@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Dedmytro\LaravelModelRelatedFields\ServiceProvider;
+use DeDmytro\LaravelModelRelatedFields\ModelRelatedFieldsServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -12,6 +12,6 @@ abstract class TestCase extends BaseTestCase
 
     protected function getPackageProviders($app): array
     {
-        return [ServiceProvider::class];
+        return [ModelRelatedFieldsServiceProvider::class];
     }
 }

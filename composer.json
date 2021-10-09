@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Dedmytro\\LaravelModelRelatedFields\\": "src"
+            "DeDmytro\\LaravelModelRelatedFields\\": "src"
         }
     },
     "autoload-dev": {
@@ -47,7 +47,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "DeDmytro\\LaravelModelRelatedFields\\ServiceProvider"
+                "DeDmytro\\LaravelModelRelatedFields\\ModelRelatedFieldsServiceProvider"
             ]
         }
     }

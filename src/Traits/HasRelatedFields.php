@@ -1,18 +1,20 @@
 <?php
 
-namespace Dedmytro\LaravelModelRelatedFields\Traits;
+namespace DeDmytro\LaravelModelRelatedFields\Traits;
 
-use Dedmytro\LaravelModelRelatedFields\Exceptions\IncorrectFieldType;
-use Dedmytro\LaravelModelRelatedFields\Exceptions\IncorrectStringParameter;
-use Dedmytro\LaravelModelRelatedFields\RelatedField;
+use DeDmytro\LaravelModelRelatedFields\Exceptions\IncorrectFieldType;
+use DeDmytro\LaravelModelRelatedFields\Exceptions\IncorrectStringParameter;
+use DeDmytro\LaravelModelRelatedFields\Helpers\RelationQueryBuilder;
+use DeDmytro\LaravelModelRelatedFields\RelatedField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
  * Trait HasRelatedFields
- * @package Dedmytro\LaravelModelRelatedFields\Traits
+ * @package DeDmytro\LaravelModelRelatedFields\Traits
  * @mixin Model
  * @property-read array $relatedFields
  * @method static Builder withoutRelatedFields()
@@ -22,17 +24,17 @@ trait HasRelatedFields
     /**
      * Define model global scope
      */
-    public function bootHasRelatedFields()
+    public static function bootHasRelatedFields()
     {
         static::addGlobalScope('add_related_fields', function ($query) {
 
-            $fields = [];
-
-            if (method_exists($this, 'addRelatedFields')) {
-                $fields = (array) $this->addRelatedFields();
-            }
-
             $model = new static();
+
+            if (method_exists($model, 'addRelatedFields')) {
+                $fields = (array) $model->addRelatedFields();
+            }else{
+                return;
+            }
 
             $resultFields = [];
 
@@ -75,22 +77,15 @@ trait HasRelatedFields
 
                 $table = $currentModel->getTable();
 
-                $relatedFieldQuery
-                    ->whereColumn(
-                        "{$endRelation->getParent()->getTable()}.{$endRelation->getForeignKeyName()}",
-                        "{$endRelation->getRelated()->getTable()}.{$endRelation->getOwnerKeyName()}"
-                    );
+                RelationQueryBuilder::from($endRelation)->buildWhereColumn($relatedFieldQuery);
 
-                /* @var $relatedFieldQuery Builder */
-                /* @var $relatedField RelatedField */
-
-                $relatedFieldQuery->when(
-                    RelatedField::is($relatedField) && $relatedField->hasSelectClause(),
-                    $relatedField->select,
-                    function ($query) use ($table, $field) {
+                if(RelatedField::is($relatedField) && $relatedField->hasSelectClause()){
+                    $relatedFieldQuery->tap($relatedField->select);
+                }else{
+                    $relatedFieldQuery->tap(function ($query) use ($table, $field) {
                         $query->select("$table.$field");
-                    }
-                );
+                    });
+                }
 
                 $resultFields[$as] = $relatedFieldQuery;
             }
@@ -104,7 +99,7 @@ trait HasRelatedFields
      * @param Builder $builder
      * @return Builder
      */
-    public function scopeWithoutRelatedFields(Builder $builder)
+    public function scopeWithoutRelatedFields(Builder $builder): Builder
     {
         return $builder->withoutGlobalScope('add_related_fields');
     }

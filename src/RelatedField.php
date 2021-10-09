@@ -1,6 +1,6 @@
 <?php
 
-namespace Dedmytro\LaravelModelRelatedFields;
+namespace DeDmytro\LaravelModelRelatedFields;
 
 use Closure;
 use Illuminate\Database\Query\Expression;

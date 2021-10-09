@@ -1,10 +1,10 @@
 <?php
 
-namespace Dedmytro\LaravelModelRelatedFields;
+namespace DeDmytro\LaravelModelRelatedFields;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-final class ServiceProvider extends BaseServiceProvider
+final class ModelRelatedFieldsServiceProvider extends BaseServiceProvider
 {
     public function boot(): void
     {
