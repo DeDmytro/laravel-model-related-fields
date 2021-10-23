@@ -3,9 +3,6 @@
 namespace DeDmytro\LaravelModelRelatedFields;
 
 use Closure;
-use Illuminate\Database\Query\Expression;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 class RelatedField
 {
@@ -23,12 +20,12 @@ class RelatedField
 
     /**
      * RelatedField constructor.
-     * @param string $field
+     * @param string $relation
      * @param Closure|null $select
      */
-    public function __construct(string $field, Closure $select = null)
+    public function __construct(string $relation, Closure $select = null)
     {
-        $this->field = $field;
+        $this->field = $relation;
         $this->select = $select;
     }
 

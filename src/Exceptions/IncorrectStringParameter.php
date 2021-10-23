@@ -2,15 +2,14 @@
 
 namespace DeDmytro\LaravelModelRelatedFields\Exceptions;
 
-use DeDmytro\LaravelModelRelatedFields\RelatedField;
-use Throwable;
+use Exception;
 
-class IncorrectStringParameter extends \Exception
+class IncorrectStringParameter extends Exception
 {
-    public function __construct()
+    public function __construct($parameter = '')
     {
         parent::__construct(
-            'Incorrect String Parameter Type. Check your string contains dot notation. Eg. user.company.name '
+            "Incorrect String Parameter Type. Check your string ($parameter) contains dot notation. Eg. user.company.name"
         );
     }
 }

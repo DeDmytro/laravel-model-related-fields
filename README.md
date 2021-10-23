@@ -26,7 +26,7 @@ Or manually update `require` block of `composer.json` and run `composer update`.
 ```json
 {
     "require": {
-        "dedmytro/laravel-model-related-fields": "^1.0"
+        "dedmytro/laravel-model-related-fields": "^0.1"
     }
 }
 ```
@@ -59,17 +59,50 @@ class Order extends Model
         ];
     }
 ```
+
 where
 
 `'event.company.country.currency'` is the same as `$order->event->company->country->currency`
 
 `'items.total'` is the same as `$order->items()->sum('price')`
 
+As an alternative you can use `$relatedFields` property for simple fields, without `RelatedField` class usage. Property
+and method result array will be be merged.
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use DeDmytro\LaravelModelRelatedFields\RelatedField;
+use DeDmytro\LaravelModelRelatedFields\Traits\HasRelatedFields;
+// ...
+
+class Order extends Model
+{
+    use HasRelatedFields;
+    
+    // ...
+    
+    protected $relatedFields = [
+      'country_currency' => 'event.company.country.currency',
+   ];
+    
+    protected function addRelatedFields(): array
+    {
+        return [
+            'total' => new RelatedField('items.total', function ($query) {
+                $query->selectRaw('SUM(price)');
+            }),
+        ];
+    }
+```
+
 The result of query:
+
 ```php
 $order = Order::first();
 ```
+
 you will get Order model with all fields plus additional related fields:
+
 ```php
 [
     "id" => 1,
@@ -79,14 +112,43 @@ you will get Order model with all fields plus additional related fields:
 ]
 ```
 
-### Customization
+### How to disable/enable
 
-If you want to avoid loading you related fields for particular query, you can use model query builder method:
+#### Disable globally
+
+To disable related fields for all models by default,
+
+* publish config and change default value
+
+```php
+'enabled' => false
+```
+
+* add env variable
+
+```env
+ENABLE_MODEL_RELATED_FIELDS=false
+```
+
+#### Disable for particular model
+
+Add `protected $enableRelatedFields = false`
+
+```php
+protected $enableRelatedFields = false;
+```
+
+#### Disable for current query
 
 ```php
 $order = Order::withoutRelatedFields()->first();
 ```
-    
+
+#### Enable for current query if disabled globally
+
+```php
+$order = Order::withRelatedFields()->first();
+```
 
 [badge_downloads]:      https://img.shields.io/packagist/dt/dedmytro/laravel-model-related-fields.svg?style=flat-square
 

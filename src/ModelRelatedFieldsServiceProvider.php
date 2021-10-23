@@ -19,12 +19,12 @@ final class ModelRelatedFieldsServiceProvider extends BaseServiceProvider
     protected function bootPublishes(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/laravel-model-related-fields.php' => $this->app->configPath('laravel-model-related-fields.php'),
+            __DIR__.'/../config/model-related-fields.php' => $this->app->configPath('model-related-fields.php'),
         ], 'config');
     }
 
     protected function registerConfig(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/laravel-model-related-fields.php', 'laravel-model-related-fields');
+        $this->mergeConfigFrom(__DIR__.'/../config/model-related-fields.php', 'model-related-fields');
     }
 }
